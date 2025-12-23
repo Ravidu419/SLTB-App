@@ -1,11 +1,18 @@
 import Button from "@/components/ui/Button";
 import DestinationSelection from "@/components/ui/DestinationSelection";
-import React from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 const img1 = require("@/assets/SLTB_Pic/img1.png");
 
-const main = () => {
+const Main = () => {
+  const [selectedCities, setSelectedCities] = useState<{
+    from: string;
+    to: string;
+  }>({ from: "", to: "" });
+
+  const router = useRouter();
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -17,18 +24,26 @@ const main = () => {
             Search for Bus
           </Text>
           <View style={{ marginTop: 30, width: "100%" }}>
-            <DestinationSelection />
+            <DestinationSelection
+              selectedCitys={selectedCities}
+              setSelectedCitys={setSelectedCities}
+            />
           </View>
-          <View style={{ marginTop: 90, width: "100%" }}>
+          <Pressable
+            onPress={() => {
+              router.push("/mapWithBusList");
+            }}
+            style={{ marginTop: 90, width: "100%" }}
+          >
             <Button text="Search" />
-          </View>
+          </Pressable>
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default main;
+export default Main;
 
 const styles = StyleSheet.create({
   image: {
