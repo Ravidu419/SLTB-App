@@ -1,7 +1,8 @@
+import Map from "@/components/Map";
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 const img1 = require("@/assets/SLTB_Pic/bus.png");
-
 function BusCard(busNumber: string, busname: string) {
   return (
     <View
@@ -39,16 +40,19 @@ function BusCard(busNumber: string, busname: string) {
 
 const mapWithBusList = () => {
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.mapContainer}></View>
-      <View style={styles.busListContainer}>
-        <Text style={styles.title}> Busses On route</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={{ flex: 1 }}>
+        <View style={styles.mapContainer}>{<Map></Map>}</View>
 
-        <View style={{ width: "100%" }}>
-          {BusCard("69", "Colombo - Kandy")}
+        <View style={styles.busListContainer}>
+          <Text style={styles.title}> Busses On route</Text>
+
+          <View style={{ width: "100%" }}>
+            {BusCard("69", "Colombo - Kandy")}
+          </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
