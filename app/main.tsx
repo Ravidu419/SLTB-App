@@ -1,5 +1,6 @@
 import Button from "@/components/ui/Button";
 import DestinationSelection from "@/components/ui/DestinationSelection";
+import axios from "axios";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
@@ -7,10 +8,51 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const img1 = require("@/assets/SLTB_Pic/img1.png");
 
 const Main = () => {
+  const BackEndUrl = "http://192.168.131.186:3000";
   const [selectedCities, setSelectedCities] = useState<{
     from: string;
     to: string;
   }>({ from: "", to: "" });
+
+  const [tripData, setTripData] = useState<any[]>([]);
+
+  async function TripDataAndBusRoutes(from: string, to: string) {
+    // get routes number in array
+    let routeDetailsList: any[] | null = null;
+    try {
+      const response = await axios.post(
+        `${BackEndUrl}/route/getAllRoutesThathroughStartAndEndCity`,
+        { start: from, end: to }
+      );
+      console.log(response.data);
+      routeDetailsList = response.data;
+    } catch (error) {
+      console.error("Error fetching trip data:", error);
+      throw new Error(error instanceof Error ? error.message : String(error));
+    }
+
+    // find trips for each route number list
+
+    const routeNumbers = routeDetailsList?.map(
+      (eachRoute) => eachRoute.routeId
+    );
+
+    console.log(routeNumbers);
+
+    // get trips for each route number
+    try {
+      const response = await axios.post(
+        `${BackEndUrl}/route/getTripBelongToRoute`,
+        { routeId: routeNumbers }
+      );
+      console.log(response.data);
+      setTripData(response.data);
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching trip data:", error);
+      return null;
+    }
+  }
 
   const router = useRouter();
   return (
@@ -30,13 +72,27 @@ const Main = () => {
             />
           </View>
           <Pressable
-            onPress={() => {
-              router.push("/mapWithBusList");
+            onPress={async () => {
+              console.log("press");
+              const data = await TripDataAndBusRoutes("Kandy", "Mawanella");
+
+              router.push({
+                pathname: "/mapWithBusList",
+                params: {
+                  tripData: JSON.stringify(data),
+                },
+              });
             }}
             style={{ marginTop: 90, width: "100%" }}
           >
             <Button text="Search" />
           </Pressable>
+
+          {tripData.map((trip, index) => (
+            <Text key={index} style={{ marginTop: 10 }}>
+              Trip ID: {trip.tripId}, Route ID: {trip.routeId}
+            </Text>
+          ))}
         </View>
       </View>
     </SafeAreaView>
