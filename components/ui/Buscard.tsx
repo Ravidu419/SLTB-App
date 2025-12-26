@@ -1,6 +1,8 @@
+import axios from "axios";
 import { ChevronDown } from "lucide-react-native";
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import { useMapStore } from "../../store/useMapStore";
 const img1 = require("@/assets/SLTB_Pic/bus.png");
 
 interface BuscardProps {
@@ -11,13 +13,32 @@ interface BuscardProps {
 }
 
 const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
+  const setGlobalTripData = useMapStore(
+    (state: any) => state.setGlobalTripData
+  );
+  const BackEndUrl = "http://192.168.83.186:3000";
   const [isExpanded, setIsExpanded] = useState(true);
+
+  async function getAllDetailsAboutTrip() {
+    try {
+      const response = await axios.post(
+        `${BackEndUrl}/route/getTripDetailsByTripId`,
+        { tripId }
+      );
+
+      console.log(response.data);
+      setGlobalTripData(response.data);
+      return response.data;
+    } catch (e) {
+      alert("error in fetching trip details" + e);
+    }
+  }
 
   return (
     <View
       style={{
         width: "100%",
-        backgroundColor: "white",
+        backgroundColor: "#ffffff",
         borderRadius: 10,
         padding: 10,
         marginBottom: 10,
@@ -26,7 +47,18 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
       }}
     >
       {/* unExpanded View */}
-      <View style={{ flex: 1, flexDirection: "row", alignItems: "center" }}>
+      <Pressable
+        onPress={() => {
+          const data = getAllDetailsAboutTrip();
+          alert("trip details" + JSON.stringify(data));
+        }}
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          backgroundColor: "red",
+        }}
+      >
         <View
           style={{
             marginRight: 30,
@@ -55,12 +87,12 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
           <Text style={{ fontSize: 20, fontWeight: "bold" }}>{routeName}</Text>
         </View>
 
-        <View>
+        <Pressable onPress={() => setIsExpanded(!isExpanded)}>
           <Text>
             <ChevronDown color="black" size={30} />
           </Text>
-        </View>
-      </View>
+        </Pressable>
+      </Pressable>
 
       {/* expand View */}
       {isExpanded && (

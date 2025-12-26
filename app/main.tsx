@@ -8,12 +8,13 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const img1 = require("@/assets/SLTB_Pic/img1.png");
 
 const Main = () => {
-  const BackEndUrl = "http://192.168.131.186:3000";
+  const BackEndUrl = "http://192.168.83.186:3000";
   const [selectedCities, setSelectedCities] = useState<{
     from: string;
     to: string;
   }>({ from: "", to: "" });
 
+  let RouteList: string[] | null = [];
   const [tripData, setTripData] = useState<any[]>([]);
 
   async function TripDataAndBusRoutes(from: string, to: string) {
@@ -37,7 +38,9 @@ const Main = () => {
       (eachRoute) => eachRoute.routeId
     );
 
-    console.log(routeNumbers);
+    RouteList = routeNumbers || [];
+
+    console.log("rute numbers are", routeNumbers);
 
     // get trips for each route number
     try {
@@ -46,7 +49,9 @@ const Main = () => {
         { routeId: routeNumbers }
       );
       console.log(response.data);
+
       setTripData(response.data);
+
       return response.data;
     } catch (error) {
       console.error("Error fetching trip data:", error);
@@ -80,6 +85,7 @@ const Main = () => {
                 pathname: "/mapWithBusList",
                 params: {
                   tripData: JSON.stringify(data),
+                  RouteList: JSON.stringify(RouteList),
                 },
               });
             }}

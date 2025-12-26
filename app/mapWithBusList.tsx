@@ -41,7 +41,7 @@ const img1 = require("@/assets/SLTB_Pic/bus.png");
 // }
 
 const mapWithBusList = () => {
-  const { tripData } = useLocalSearchParams();
+  const { tripData, RouteList } = useLocalSearchParams();
   // Parse tripData from string to array
   let trips = [];
   try {
@@ -50,6 +50,29 @@ const mapWithBusList = () => {
     console.error("Failed to parse tripData", e);
     trips = [];
   }
+
+  // Parse RouteList from string to array
+  let routes = [];
+  try {
+    routes = RouteList ? JSON.parse(RouteList as string) : [];
+  } catch (e) {
+    console.error("Failed to parse RouteList", e);
+    routes = [];
+  }
+
+  const BackEndUrl = "http://192.168.83.186:3000";
+  // make road using proute ids
+  // useEffect(() => {
+  //   const citysLisByRoute = axios.post(
+  //     `${BackEndUrl}/route/getCityListByRouteIds`,
+  //     {
+  //       routeIds: routes,
+  //     }
+  //   );
+
+  //   console.log("citys line are" )
+  // }, []);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ flex: 1 }}>
