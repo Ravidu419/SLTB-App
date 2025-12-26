@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     gap: 10,
     width: "100%",
     borderColor: "gray",
-    borderWidth: 2,
+    borderWidth: 1,
 
     borderRadius: 20,
   },
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginLeft: 70,
     width: "70%",
-    height: 2,
+    height: 1,
     backgroundColor: "gray",
   },
 });

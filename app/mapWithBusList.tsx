@@ -66,6 +66,10 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "50%",
     backgroundColor: "#84003A",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
   title: {
     marginTop: 20,
