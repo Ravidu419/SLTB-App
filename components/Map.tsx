@@ -110,7 +110,7 @@ const map = () => {
                 latitude: globalTripData.futurePosition.location.location.lat,
                 longitude: globalTripData.futurePosition.location.location.lng,
               }}
-              apikey=
+              apikey={"
               strokeWidth={6}
               strokeColor="red"
               onReady={(result) => {

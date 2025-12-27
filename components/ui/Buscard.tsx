@@ -186,66 +186,141 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
       {isExpanded && localGlobalStoreData && (
         <View style={styles.ExpandedContainer}>
           {/* //from to container */}
-          <View
-            style={{
-              padding: 2,
-              flexDirection: "row",
-              minHeight: 60, // Add a minHeight to ensure children are visible
-            }}
-          >
-            <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Dot color="#84003A" size={30} strokeWidth={5} />
-                <Text
-                  style={{
-                    color: "#84003A",
-                    fontSize: 14,
-                    fontWeight: "bold",
-                    left: -5,
-                  }}
-                >
-                  From
-                </Text>
-              </View>
-              <Text
+          {localGlobalStoreData.pastPosition &&
+            localGlobalStoreData.futurePosition && (
+              <View
                 style={{
-                  top: -3,
-                  color: "#84003A",
-                  fontSize: 24,
-                  fontWeight: "bold",
-                  paddingLeft: 25,
+                  padding: 2,
+                  flexDirection: "row",
+                  minHeight: 60, // Add a minHeight to ensure children are visible
                 }}
               >
-                Kottawa
-              </Text>
-            </View>
-            <View style={{ flex: 1 }}>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Dot color="#84003A" size={30} strokeWidth={5} />
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Dot color="#84003A" size={30} strokeWidth={5} />
+                    <Text
+                      style={{
+                        color: "#84003A",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        left: -5,
+                      }}
+                    >
+                      From
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      top: -3,
+                      color: "#84003A",
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      paddingLeft: 25,
+                    }}
+                  >
+                    {localGlobalStoreData.pastPosition.City.name}
+                  </Text>
+                </View>
+                <View style={{ flex: 1 }}>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Dot color="#84003A" size={30} strokeWidth={5} />
+                    <Text
+                      style={{
+                        color: "#84003A",
+                        fontSize: 14,
+                        fontWeight: "bold",
+                        left: -5,
+                      }}
+                    >
+                      to
+                    </Text>
+                  </View>
+                  <Text
+                    style={{
+                      top: -3,
+                      color: "#84003A",
+                      fontSize: 24,
+                      fontWeight: "bold",
+                      paddingLeft: 25,
+                    }}
+                  >
+                    {localGlobalStoreData.futurePosition.City.name}
+                  </Text>
+                </View>
+              </View>
+            )}
+
+          {/* Not Trip Start Yet */}
+          {localGlobalStoreData.pastPosition === null &&
+            localGlobalStoreData.futurePosition && (
+              <View>
                 <Text
                   style={{
+                    textAlign: "center",
                     color: "#84003A",
-                    fontSize: 14,
+                    fontSize: 26,
                     fontWeight: "bold",
-                    left: -5,
                   }}
                 >
-                  From
+                  {(() => {
+                    const hours =
+                      localGlobalStoreData.futurePosition.hours ?? 0;
+                    const mins = localGlobalStoreData.futurePosition.mins ?? 0;
+                    const period = hours >= 12 ? "PM" : "AM";
+                    const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+                    const formattedMins = mins.toString().padStart(2, "0");
+                    const startCity =
+                      localGlobalStoreData?.futurePosition?.City.name ?? "";
+                    return `Starts at ${displayHour}:${formattedMins} ${period} `;
+                  })()}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#84003A",
+                    fontSize: 26,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {`from ${localGlobalStoreData.futurePosition.City.name}`}
                 </Text>
               </View>
-              <Text
-                style={{
-                  top: -3,
-                  color: "#84003A",
-                  fontSize: 24,
-                  fontWeight: "bold",
-                  paddingLeft: 25,
-                }}
-              >
-                Kottawa
-              </Text>
-            </View>
-          </View>
+            )}
+          {/* Completed Trip */}
+          {localGlobalStoreData.pastPosition &&
+            localGlobalStoreData.futurePosition === null && (
+              <View>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#84003A",
+                    fontSize: 26,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {(() => {
+                    const hours = localGlobalStoreData.pastPosition.hours ?? 0;
+                    const mins = localGlobalStoreData.pastPosition.mins ?? 0;
+                    const period = hours >= 12 ? "PM" : "AM";
+                    const displayHour = hours % 12 === 0 ? 12 : hours % 12;
+                    const formattedMins = mins.toString().padStart(2, "0");
+                    const startCity =
+                      localGlobalStoreData?.pastPosition?.City.name ?? "";
+                    return `Stopped ${displayHour}:${formattedMins} ${period} `;
+                  })()}
+                </Text>
+                <Text
+                  style={{
+                    textAlign: "center",
+                    color: "#84003A",
+                    fontSize: 26,
+                    fontWeight: "bold",
+                  }}
+                >
+                  {`in ${localGlobalStoreData.pastPosition.City.name}`}
+                </Text>
+              </View>
+            )}
           {/* pogress bar */}
           <View
             style={{
@@ -265,6 +340,40 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                 }%`,
               }}
             ></View>
+          </View>
+
+          {/* // Presentage */}
+          <View
+            style={{
+              top: -5,
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center",
+            }}
+          >
+            <Text
+              style={{
+                color: "#84003A",
+                fontSize: 12,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              {/* //show presentage if not null paseposition and futureposition */}
+              {localGlobalStoreData.pastPosition &&
+                localGlobalStoreData.futurePosition &&
+                `${Math.trunc(
+                  localGlobalStoreData.presentageInTrip * 100
+                )}% Completed`}
+              {/* if not have any pastPosition and have futureposition show copleted
+              or not started */}
+              {!localGlobalStoreData.pastPosition &&
+                localGlobalStoreData.futurePosition &&
+                "Not Started"}
+              {localGlobalStoreData.pastPosition &&
+                !localGlobalStoreData.futurePosition &&
+                "Completed"}
+            </Text>
           </View>
 
           {/* //second pogress bar */}
@@ -306,39 +415,6 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                 </View>
                 //
               ))}
-          </View>
-
-          {/* // Presentage */}
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "#84003A",
-                fontSize: 12,
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-            >
-              {/* //show presentage if not null paseposition and futureposition */}
-              {localGlobalStoreData.pastPosition &&
-                localGlobalStoreData.futurePosition &&
-                `${Math.trunc(
-                  localGlobalStoreData.presentageInTrip * 100
-                )}% Completed`}
-              {/* if not have any pastPosition and have futureposition show copleted
-              or not started */}
-              {!localGlobalStoreData.pastPosition &&
-                localGlobalStoreData.futurePosition &&
-                "Not Started"}
-              {localGlobalStoreData.pastPosition &&
-                !localGlobalStoreData.futurePosition &&
-                "Completed"}
-            </Text>
           </View>
         </View>
       )}
