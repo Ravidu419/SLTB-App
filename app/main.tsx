@@ -8,7 +8,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const img1 = require("@/assets/SLTB_Pic/img1.png");
 
 const Main = () => {
-  const BackEndUrl = "http://192.168.83.186:3000";
+  const BackEndUrl = "http://192.168.43.186:3000";
   const [selectedCities, setSelectedCities] = useState<{
     from: string;
     to: string;

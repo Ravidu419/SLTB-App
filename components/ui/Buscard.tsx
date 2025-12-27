@@ -16,7 +16,7 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
   const setGlobalTripData = useMapStore(
     (state: any) => state.setGlobalTripData
   );
-  const BackEndUrl = "http://192.168.83.186:3000";
+  const BackEndUrl = "http://192.168.43.186:3000";
   const [isExpanded, setIsExpanded] = useState(true);
 
   async function getAllDetailsAboutTrip() {

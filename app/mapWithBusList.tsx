@@ -60,7 +60,7 @@ const mapWithBusList = () => {
     routes = [];
   }
 
-  const BackEndUrl = "http://192.168.83.186:3000";
+  const BackEndUrl = "http://192.168.43.186:3000";
   // make road using proute ids
   // useEffect(() => {
   //   const citysLisByRoute = axios.post(
