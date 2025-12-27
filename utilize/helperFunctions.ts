@@ -76,3 +76,20 @@ export function presentageBetweenPoints(
 export function timeToSeconds(hours: number, mins: number) {
   return hours * 3600 + mins * 60;
 }
+
+const data = {
+  ListOfPoints: [
+    {
+      cityId: 2,
+      days: 0,
+      hours: 4,
+      mins: 0,
+      City: {
+        cityId: 2,
+        name: "Mawanella",
+      },
+    },
+  ],
+};
+
+const DistanceList = [20, 30, 25, 15, 30];

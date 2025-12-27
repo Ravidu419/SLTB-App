@@ -60,7 +60,7 @@ const mapWithBusList = () => {
     routes = [];
   }
 
-  const BackEndUrl = "http://192.168.43.186:3000";
+  const BackEndUrl = "http://192.168.83.186:3000";
   // make road using proute ids
   // useEffect(() => {
   //   const citysLisByRoute = axios.post(
@@ -81,7 +81,7 @@ const mapWithBusList = () => {
         </View>
         <View style={styles.busListContainer}>
           <Text style={styles.title}>Busses On route</Text>
-          <View style={{ width: "100%" }}>
+          <SafeAreaView style={{ flex: 1, width: "100%" }}>
             <FlatList
               data={trips}
               keyExtractor={(item, index) =>
@@ -98,7 +98,7 @@ const mapWithBusList = () => {
                 </View>
               )}
             />
-          </View>
+          </SafeAreaView>
         </View>
       </View>
     </SafeAreaView>

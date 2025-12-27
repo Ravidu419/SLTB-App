@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
@@ -13,6 +13,10 @@ const map = () => {
   const sortedLocations = globalTripData?.TripTimeWithCity?.map(
     (each: any) => each.City.name
   );
+
+  useEffect(() => {
+    setMidRoutePoint(null);
+  }, [globalTripData]);
 
   // function calculatePresentageInTrip() {
   //   // console.log("This logs every 3 seconds!");
@@ -51,7 +55,7 @@ const map = () => {
             origin={sortedLocations[0]}
             destination={sortedLocations[sortedLocations.length - 1]}
             waypoints={sortedLocations.slice(1, -1)}
-            apikey={}
+            apikey=
             strokeWidth={5}
             strokeColor="#84003A90"
           />
@@ -106,7 +110,7 @@ const map = () => {
                 latitude: globalTripData.futurePosition.location.location.lat,
                 longitude: globalTripData.futurePosition.location.location.lng,
               }}
-              apikey={}
+              apikey=
               strokeWidth={6}
               strokeColor="red"
               onReady={(result) => {
