@@ -22,7 +22,7 @@ const Main = () => {
     let routeDetailsList: any[] | null = null;
     try {
       const response = await axios.post(
-        `${BackEndUrl}/route/getAllRoutesThathroughStartAndEndCity`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/route/getAllRoutesThathroughStartAndEndCity`,
         { start: from, end: to }
       );
       console.log(response.data);
@@ -45,7 +45,7 @@ const Main = () => {
     // get trips for each route number
     try {
       const response = await axios.post(
-        `${BackEndUrl}/route/getTripBelongToRoute`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/route/getTripBelongToRoute`,
         { routeId: routeNumbers }
       );
       console.log(response.data);

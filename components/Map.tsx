@@ -55,7 +55,7 @@ const map = () => {
             origin={sortedLocations[0]}
             destination={sortedLocations[sortedLocations.length - 1]}
             waypoints={sortedLocations.slice(1, -1)}
-            apikey=
+            apikey={process.env.EXPO_PUBLIC_API_KEY!}
             strokeWidth={5}
             strokeColor="#84003A90"
           />
@@ -110,7 +110,7 @@ const map = () => {
                 latitude: globalTripData.futurePosition.location.location.lat,
                 longitude: globalTripData.futurePosition.location.location.lng,
               }}
-              apikey={"
+              apikey={process.env.EXPO_PUBLIC_API_KEY!}
               strokeWidth={6}
               strokeColor="red"
               onReady={(result) => {

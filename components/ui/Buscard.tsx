@@ -54,7 +54,7 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${BackEndUrl}/route/getTripDetailsByTripId`,
+        `${process.env.EXPO_PUBLIC_BACKEND_URL}/route/getTripDetailsByTripId`,
         { tripId }
       );
 
@@ -73,9 +73,12 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
       );
 
       try {
-        const Resalt = await axios.post(`${BackEndUrl}/maps/getRoueDistance`, {
-          cityList: DistanceAddedTripDetails,
-        });
+        const Resalt = await axios.post(
+          `${process.env.EXPO_PUBLIC_BACKEND_URL}/maps/getRoueDistance`,
+          {
+            cityList: DistanceAddedTripDetails,
+          }
+        );
         // Save the cityList from the response to state
         setRouteDistanceList(Resalt.data);
         console.log("dutation data is ", Resalt.data.results);
@@ -306,7 +309,7 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                     const formattedMins = mins.toString().padStart(2, "0");
                     const startCity =
                       localGlobalStoreData?.pastPosition?.City.name ?? "";
-                    return `Stopped ${displayHour}:${formattedMins} ${period} `;
+                    return `Completed ${displayHour}:${formattedMins} ${period} `;
                   })()}
                 </Text>
                 <Text
@@ -322,59 +325,64 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
               </View>
             )}
           {/* pogress bar */}
-          <View
-            style={{
-              backgroundColor: "#d3d3d3",
-              borderRadius: 10,
-              marginVertical: 10,
-              padding: 5,
-            }}
-          >
+          {localGlobalStoreData?.presentageInTrip && (
             <View
               style={{
-                height: 5,
-                backgroundColor: "#84003A",
+                backgroundColor: "#d3d3d3",
                 borderRadius: 10,
-                width: `${
-                  (localGlobalStoreData?.presentageInTrip ?? 0) * 100
-                }%`,
-              }}
-            ></View>
-          </View>
-
-          {/* // Presentage */}
-          <View
-            style={{
-              top: -5,
-              flexDirection: "row",
-              justifyContent: "flex-end",
-              alignItems: "center",
-            }}
-          >
-            <Text
-              style={{
-                color: "#84003A",
-                fontSize: 12,
-                fontWeight: "bold",
-                textAlign: "center",
+                marginVertical: 10,
+                padding: 5,
               }}
             >
-              {/* //show presentage if not null paseposition and futureposition */}
-              {localGlobalStoreData.pastPosition &&
-                localGlobalStoreData.futurePosition &&
-                `${Math.trunc(
-                  localGlobalStoreData.presentageInTrip * 100
-                )}% Completed`}
-              {/* if not have any pastPosition and have futureposition show copleted
+              <View
+                style={{
+                  height: 5,
+                  backgroundColor: "#84003A",
+                  borderRadius: 10,
+                  width: `${
+                    (localGlobalStoreData?.presentageInTrip ?? 0) * 100
+                  }%`,
+                }}
+              ></View>
+            </View>
+          )}
+
+          {/* // Presentage */}
+
+          {localGlobalStoreData?.presentageInTrip && (
+            <View
+              style={{
+                top: -5,
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  color: "#84003A",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                {/* //show presentage if not null paseposition and futureposition */}
+                {localGlobalStoreData.pastPosition &&
+                  localGlobalStoreData.futurePosition &&
+                  `${Math.trunc(
+                    localGlobalStoreData.presentageInTrip * 100
+                  )}% Completed`}
+                {/* if not have any pastPosition and have futureposition show copleted
               or not started */}
-              {!localGlobalStoreData.pastPosition &&
-                localGlobalStoreData.futurePosition &&
-                "Not Started"}
-              {localGlobalStoreData.pastPosition &&
-                !localGlobalStoreData.futurePosition &&
-                "Completed"}
-            </Text>
-          </View>
+                {!localGlobalStoreData.pastPosition &&
+                  localGlobalStoreData.futurePosition &&
+                  "Not Started"}
+                {localGlobalStoreData.pastPosition &&
+                  !localGlobalStoreData.futurePosition &&
+                  "Completed"}
+              </Text>
+            </View>
+          )}
 
           {/* //second pogress bar */}
 
@@ -391,6 +399,7 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
             {routeDistanceList &&
               routeDistanceList.results.map((each: any, index: number) => (
                 <View
+                  key={index}
                   style={{
                     // overflow: "show",
                     position: "relative",
@@ -412,6 +421,89 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                   >
                     {Math.trunc(each.km)} km
                   </Text>
+
+                  {/* // destination points names */}
+                  <View>
+                    {/* <View
+                      style={{
+                        height: 13,
+                        width: 13,
+                        backgroundColor: "white",
+                        flexDirection: "row",
+
+                        borderRadius: 100,
+                        left: "100%",
+                        transform: [{ translateX: -7 }],
+                        position: "absolute",
+                      }}
+                    ></View> */}
+
+                    {/* //vertical bar */}
+                    <View
+                      style={{
+                        alignItems: "center",
+                        height: 15,
+                        width: 2,
+                        backgroundColor: "#84003A",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        top: 10,
+                        position: "absolute",
+                        left: "100%",
+                      }}
+                    ></View>
+                    <Text
+                      style={{
+                        color: "#84003A",
+                        fontSize: 10,
+                        position: "absolute",
+                        top: 30,
+                        left: "100%",
+                        transform: [
+                          {
+                            translateX: `${
+                              index === routeDistanceList.results.length - 1
+                                ? "-100%"
+                                : "-50%"
+                            }`,
+                          },
+                        ], // Approximate center alignment
+                      }}
+                    >
+                      {each.to}
+                    </Text>
+                  </View>
+                  {/* // start point when index is 0 */}
+                  {index === 0 && (
+                    <View>
+                      {/* //vertical bar */}
+                      <View
+                        style={{
+                          alignItems: "center",
+                          height: 15,
+                          width: 2,
+                          backgroundColor: "#84003A",
+                          flexDirection: "row",
+                          justifyContent: "center",
+                          top: 10,
+                          position: "absolute",
+                          right: "100%",
+                        }}
+                      ></View>
+                      <Text
+                        style={{
+                          color: "#84003A",
+                          fontSize: 10,
+                          position: "absolute",
+                          top: 30,
+                          right: "100%",
+                          transform: [{ translateX: "100%" }], // Approximate center alignment
+                        }}
+                      >
+                        {each.from}
+                      </Text>
+                    </View>
+                  )}
                 </View>
                 //
               ))}
