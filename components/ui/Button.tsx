@@ -8,7 +8,7 @@ const Button = ({ text }: { text: string }) => {
         backgroundColor: "#84003A",
         paddingVertical: 15,
         paddingHorizontal: 80,
-        borderRadius: 10,
+        borderRadius: 100,
         alignItems: "center",
       }}
     >
