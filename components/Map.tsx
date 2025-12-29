@@ -115,7 +115,7 @@ const map = () => {
                 longitude: globalTripData.futurePosition.location.location.lng,
               }}
               apikey={process.env.EXPO_PUBLIC_API_KEY!}
-              strokeWidth={6}
+              strokeWidth={3}
               strokeColor="red"
               onReady={(result) => {
                 if (result.coordinates && result.coordinates.length > 0) {

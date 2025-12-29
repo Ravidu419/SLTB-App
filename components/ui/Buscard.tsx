@@ -472,6 +472,36 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                     >
                       {each.to}
                     </Text>
+
+                    <Text
+                      style={{
+                        color: "#84003A",
+                        fontSize: 10,
+                        position: "absolute",
+                        top: 40,
+                        left: "100%",
+                        transform: [
+                          {
+                            translateX: `${
+                              index === routeDistanceList.results.length - 1
+                                ? "-100%"
+                                : "-50%"
+                            }`,
+                          },
+                        ], // Approximate center alignment
+                      }}
+                    >
+                      {localGlobalStoreData?.TripTimeWithCity?.map(
+                        (town: any) => {
+                          if (each.to === town.City.name) {
+                            return `${String(town.hours).padStart(
+                              2,
+                              "0"
+                            )}:${String(town.mins).padStart(2, "0")}`;
+                          }
+                        }
+                      )}
+                    </Text>
                   </View>
                   {/* // start point when index is 0 */}
                   {index === 0 && (
@@ -501,6 +531,24 @@ const Buscard = ({ tripId, routeId, tripName, routeName }: BuscardProps) => {
                         }}
                       >
                         {each.from}
+                      </Text>
+
+                      <Text
+                        style={{
+                          color: "#84003A",
+                          fontSize: 10,
+                          position: "absolute",
+                          top: 40,
+                          right: "100%",
+                          transform: [{ translateX: "100%" }], // Approximate center alignment
+                        }}
+                      >
+                        {localGlobalStoreData?.TripTimeWithCity &&
+                          `${String(
+                            localGlobalStoreData.TripTimeWithCity[0].hours
+                          ).padStart(2, "0")}:${String(
+                            localGlobalStoreData.TripTimeWithCity[0].mins
+                          ).padStart(2, "0")}`}
                       </Text>
                     </View>
                   )}
