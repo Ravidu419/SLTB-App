@@ -3,6 +3,7 @@ import { Image, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { useMapStore } from "../store/useMapStore";
+import Mapstyle from "./ui/Mapstyle";
 
 const map = () => {
   const { globalTripData } = useMapStore() as { globalTripData: any };
@@ -42,6 +43,9 @@ const map = () => {
       {/* <Text>{JSON.stringify(sortedLocations)}</Text>; */}
       <MapView
         //    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+
+        // showsTraffic={true}
+        customMapStyle={Mapstyle}
         style={{ width: "100%", height: "100%" }}
         region={{
           latitude: 7.8731, // Centered on Sri Lanka
@@ -56,8 +60,8 @@ const map = () => {
             destination={sortedLocations[sortedLocations.length - 1]}
             waypoints={sortedLocations.slice(1, -1)}
             apikey={process.env.EXPO_PUBLIC_API_KEY!}
-            strokeWidth={5}
-            strokeColor="#84003A90"
+            strokeWidth={2}
+            strokeColor="#84003A"
           />
         )}
 

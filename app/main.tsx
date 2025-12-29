@@ -79,7 +79,7 @@ const Main = () => {
           <Pressable
             onPress={async () => {
               console.log("press");
-              const data = await TripDataAndBusRoutes("Kandy", "Mawanella");
+              const data = await TripDataAndBusRoutes("Kandy", "Rathnapura");
 
               router.push({
                 pathname: "/mapWithBusList",
